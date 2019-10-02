@@ -81,7 +81,8 @@ public class TCPClientSSLRSA {
 	
 	public static void main(String[] args) throws InvalidKeyException, NoSuchAlgorithmException, SignatureException, NoSuchPaddingException {
 		// set the truststore dynamically using the system property
-
+		System.setProperty("javax.net.ssl.trustStore", "/usr/local/keys/tcp_truststore");
+		System.setProperty("javax.net.ssl.trustStorePassword", "qwerty");
 		// implement me
 		
 		String message = "Message from TCP SSLClient";

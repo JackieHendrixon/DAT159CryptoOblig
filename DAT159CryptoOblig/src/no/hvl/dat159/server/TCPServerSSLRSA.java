@@ -99,13 +99,15 @@ public class TCPServerSSLRSA {
 	
 	private PublicKey getPublicKey() throws NoSuchAlgorithmException, NoSuchPaddingException {
 		
-		String certpath = "specify certificate path here";		// extract public key from the certificate file
+		String certpath = "/usr/local/keys/tcpexample.cer";		// extract public key from the certificate file
 		
 		return Certificates.getPublicKey(certpath);
 	}
 	
 	public static void main(String[] args) throws IOException, NoSuchAlgorithmException, NoSuchPaddingException {
 		// set the keystore dynamically using the system property
+		System.setProperty("javax.net.ssl.keyStore", "/usr/local/keys/tcp_keystore");
+		System.setProperty("javax.net.ssl.keyStorePassword", "qwerty");
 		
 		// implement me
 		
