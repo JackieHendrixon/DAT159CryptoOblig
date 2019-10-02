@@ -5,10 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
-import java.security.PrivateKey;
-import java.security.SignatureException;
+import java.security.*;
 
 import javax.crypto.NoSuchPaddingException;
 import javax.net.SocketFactory;
@@ -42,7 +39,8 @@ public class TCPClientSSLRSA {
 			// sign the message and append the signature to the message to the server
 			
 			// implement me
-			String signatureinhex = "";
+
+			String signatureinhex = DigitalSignature.getHexValue(DigitalSignature.sign(msg,getPrivateKey(),DigitalSignature.SIGNATURE_SHA256WithRSA));
 			
 			msg = msg + "-"+signatureinhex;			// format message as: Message-Signature
 			
@@ -64,16 +62,16 @@ public class TCPClientSSLRSA {
 			
 		} catch (IOException e) {
 			e.printStackTrace();
+		} catch (GeneralSecurityException e) {
+			e.printStackTrace();
 		}
 
 	}
 	
-	private PrivateKey getPrivateKey() throws NoSuchAlgorithmException, NoSuchPaddingException {
+	private PrivateKey getPrivateKey() throws NoSuchAlgorithmException, NoSuchPaddingException, GeneralSecurityException, IOException {
 		
-		PrivateKey privatekey = null;
-		
-		// implement me
-		
+		PrivateKey privatekey = KeyStores.getPrivateKeyFromKeyStore("/usr/local/keys/tcp_keystore","tcpexample","qwerty");
+
 		return privatekey;
 	}
 
@@ -81,7 +79,7 @@ public class TCPClientSSLRSA {
 	public static void main(String[] args) throws InvalidKeyException, NoSuchAlgorithmException, SignatureException, NoSuchPaddingException {
 		// set the truststore dynamically using the system property
 		System.setProperty("javax.net.ssl.trustStore", "/usr/local/keys/tcp_truststore");
-		System.setProperty("javax.net.ssl.trustStorePassword", "kwiatek");
+		System.setProperty("javax.net.ssl.trustStorePassword", "qwerty");
 		// implement me
 		
 		String message = "Message from TCP SSLClient";

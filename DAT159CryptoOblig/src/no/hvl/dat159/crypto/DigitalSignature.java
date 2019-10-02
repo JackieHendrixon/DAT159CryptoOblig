@@ -3,6 +3,7 @@
  */
 package no.hvl.dat159.crypto;
 
+import java.io.FileInputStream;
 import java.io.UnsupportedEncodingException;
 import java.security.*;
 
@@ -18,10 +19,15 @@ public class DigitalSignature {
 	public static final String SIGNATURE_SHA256WithRSA = "SHA256WithRSA";
 	
 	public static byte[] sign(String message, PrivateKey privateKey, String algorithm) throws NoSuchAlgorithmException, InvalidKeyException, UnsupportedEncodingException, SignatureException {
+
+		Signature signature = Signature.getInstance(algorithm);
+
+		signature.initSign(privateKey);
+
+
+		signature.update(getEncodedBinary(message));
 		
-		// implement me
-		
-		return null;
+		return signature.sign();
 		
 	}
 	

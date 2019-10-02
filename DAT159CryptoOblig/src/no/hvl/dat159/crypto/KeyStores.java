@@ -39,10 +39,6 @@ public class KeyStores {
 		{
 
 		}
-		KeyManagerFactory keyManagerFactory =
-				KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
-		keyManagerFactory.init(keyStore, keyStorePassword.toCharArray());
-
 		PrivateKey key = (PrivateKey) keyStore.getKey(alias,keyStorePassword.toCharArray());
 		
 		return key;
