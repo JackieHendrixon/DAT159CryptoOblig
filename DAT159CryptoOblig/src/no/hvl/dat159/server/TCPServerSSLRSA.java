@@ -1,16 +1,13 @@
 package no.hvl.dat159.server;
 
-import java.io.BufferedReader;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.PublicKey;
 import java.security.SignatureException;
+import java.security.cert.CertificateException;
 
 import javax.crypto.NoSuchPaddingException;
 import javax.net.ServerSocketFactory;
@@ -71,7 +68,7 @@ public class TCPServerSSLRSA {
 			
 			socket.close();
 	
-		}catch(IOException e) {
+		}catch(IOException | CertificateException e) {
 			
 			e.printStackTrace();
 		}
@@ -97,7 +94,7 @@ public class TCPServerSSLRSA {
 	}
 	
 	
-	private PublicKey getPublicKey() throws NoSuchAlgorithmException, NoSuchPaddingException {
+	private PublicKey getPublicKey() throws NoSuchAlgorithmException, NoSuchPaddingException, CertificateException, FileNotFoundException {
 		
 		String certpath = "/usr/local/keys/tcpexample.cer";		// extract public key from the certificate file
 		
@@ -107,7 +104,7 @@ public class TCPServerSSLRSA {
 	public static void main(String[] args) throws IOException, NoSuchAlgorithmException, NoSuchPaddingException {
 		// set the keystore dynamically using the system property
 		System.setProperty("javax.net.ssl.keyStore", "/usr/local/keys/tcp_keystore");
-		System.setProperty("javax.net.ssl.keyStorePassword", "qwerty");
+		System.setProperty("javax.net.ssl.keyStorePassword", "kwiatek");
 		
 		// implement me
 		

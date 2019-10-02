@@ -39,7 +39,6 @@ public class TCPClientSSLRSA {
 			BufferedReader inmsg = new BufferedReader(new InputStreamReader(csocket.getInputStream()));
 			
 			System.out.println("Message to TCPServer: "+msg);
-			
 			// sign the message and append the signature to the message to the server
 			
 			// implement me
@@ -82,7 +81,7 @@ public class TCPClientSSLRSA {
 	public static void main(String[] args) throws InvalidKeyException, NoSuchAlgorithmException, SignatureException, NoSuchPaddingException {
 		// set the truststore dynamically using the system property
 		System.setProperty("javax.net.ssl.trustStore", "/usr/local/keys/tcp_truststore");
-		System.setProperty("javax.net.ssl.trustStorePassword", "qwerty");
+		System.setProperty("javax.net.ssl.trustStorePassword", "kwiatek");
 		// implement me
 		
 		String message = "Message from TCP SSLClient";
