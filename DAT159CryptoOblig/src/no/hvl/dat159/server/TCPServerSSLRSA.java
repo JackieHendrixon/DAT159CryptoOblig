@@ -23,7 +23,7 @@ public class TCPServerSSLRSA {
 	private ServerSocket ssocket = null;
 	private int port;
 	
-	public TCPServerSSLRSA(int port) {
+	private TCPServerSSLRSA(int port) {
 		this.port = port;
 		createSSLServerSocket();
 	}
@@ -38,7 +38,7 @@ public class TCPServerSSLRSA {
 		}
 	}
 	
-	public void socketlistener() throws NoSuchAlgorithmException, NoSuchPaddingException {
+	private void socketlistener() throws NoSuchAlgorithmException, NoSuchPaddingException {
 		
 		try {
 			
@@ -53,7 +53,7 @@ public class TCPServerSSLRSA {
 					
 			boolean valid = checkMessageForValidity(clientmsg, getPublicKey());
 			
-			String feedback = " ";
+			String feedback;
 			if(valid)
 				feedback = "message is valid";
 			else
@@ -68,25 +68,25 @@ public class TCPServerSSLRSA {
 			
 			socket.close();
 	
-		}catch(IOException | CertificateException e) {
+		}catch(IOException | CertificateException | SignatureException | InvalidKeyException e) {
 			
 			e.printStackTrace();
 		}
 	}
 	
-	private boolean checkMessageForValidity(String messageandsignature, PublicKey publickey) {
+	private boolean checkMessageForValidity(String messageandsignature, PublicKey publickey) throws SignatureException, NoSuchAlgorithmException, InvalidKeyException, UnsupportedEncodingException {
 		
 		if(messageandsignature.startsWith("GET /")) {
 			messageandsignature = messageandsignature.replace("GET /", "");
 			messageandsignature = messageandsignature.replace("HTTP/1.1", "");
 		}
 		
-		boolean isValid = false;
+		boolean isValid;
 		
 		String[] tokens = messageandsignature.trim().split("-");
 		String message = tokens[0].replace("%20", " ");
 		String signatureinhex = tokens[1];
-		
+		isValid = DigitalSignature.verify(message, DigitalSignature.getEncodedBinary(signatureinhex), publickey, DigitalSignature.SIGNATURE_SHA256WithRSA);
 		// implement me - verify signature and send the result
 		
 		return isValid;

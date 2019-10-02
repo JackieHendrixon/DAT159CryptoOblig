@@ -4,11 +4,7 @@
 package no.hvl.dat159.crypto;
 
 import java.io.UnsupportedEncodingException;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
-import java.security.PrivateKey;
-import java.security.PublicKey;
-import java.security.SignatureException;
+import java.security.*;
 
 import javax.xml.bind.DatatypeConverter;
 
@@ -30,10 +26,10 @@ public class DigitalSignature {
 	}
 	
 	public static boolean verify(String message, byte[] digitalSignature, PublicKey publickey, String algorithm) throws NoSuchAlgorithmException, InvalidKeyException, UnsupportedEncodingException, SignatureException {
-		
-		// implement me
-		
-		return false;
+		Signature sig = Signature.getInstance(algorithm);
+		sig.initVerify(publickey);
+		sig.update(message.getBytes());
+		return sig.verify(digitalSignature);
 	}
 	
 	public static String getHexValue(byte[] signature) {
